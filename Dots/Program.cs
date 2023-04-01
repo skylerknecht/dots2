@@ -35,7 +35,7 @@ namespace Dots
             }
             return result;
         }
-        private static (int, string) ExecuteAssembely(byte[] assembly_bytes, string[] arguments, string method_name = "Main", Func<object, task> callback = null)
+        private static (int, string) ExecuteAssembely(byte[] assembly_bytes, string[] arguments, string method_name = "Main")
         {
             Assembly assembly;
             try
@@ -63,7 +63,7 @@ namespace Dots
                             Console.SetOut(sw);
 
                             object instance = Activator.CreateInstance(type);
-                            methodOutput = method.Invoke(instance, callback is null ? new object[] { arguments } : new object[] { callback });
+                            methodOutput = method.Invoke(instance, new object[] { arguments });
 
                             //Restore output -- Stops redirecting output
                             Console.SetOut(prevConOut);

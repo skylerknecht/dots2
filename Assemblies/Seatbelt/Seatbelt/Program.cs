@@ -2,13 +2,13 @@
 
 namespace Seatbelt
 {
-    public static class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
-                using var sb = (new Seatbelt(args));
+                var sb = (new Seatbelt(args));
                 sb.Start();
             }
             catch (Exception e)
