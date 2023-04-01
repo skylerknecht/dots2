@@ -19,5 +19,5 @@ to avoid any issues. The following ILMerge command will statically compile all c
 that this command is intended to be ran within the /bin/Release directory of the Dots solution.
 
 ```
-
+ILMerge.exe /out:DotsMerged.exe Dots.exe Microsoft.Bcl.AsyncInterfaces.dll System.Buffers.dll System.Memory.dll System.Numerics.Vectors.dll System.Runtime.CompilerServices.Unsafe.dll System.Text.Encodings.Web.dll System.Text.Json.dll System.Threading.Tasks.Extensions.dll System.ValueTuple.dll
 ```
