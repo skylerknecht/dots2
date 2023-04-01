@@ -1,16 +1,6 @@
 # Dots
 *C# Implant for the Connect Command and Control Framework* 
 
-## Complimation
-Connected is developed towards the .NET 4.8 framework. Target systems may not have all dependenices installed
-such as System.Text.JSON. It is recommended to statically compile all dependices when compiling from source 
-to avoid any issues. The following ILMerge command will statically compile all current depencies. Note
-that this command is intended to be ran in the /bin/Release directory of the Dots solution.
-
-```
-
-```
-
 ## Overview
 Dots is an Implant designed to remotely administrate windows systems. The implant has been
 designed to communicate with the Connect Command and Control Framework to obtain tasks
@@ -21,3 +11,13 @@ included compiled .NET assemblies located in the assemblies solution.
 
 Dot is only to be used for legal applications when the explicit permission of the targeted
 organizaiton has been obtained.
+
+## Complimation
+Connected is developed towards the .NET 4.8 framework. Target systems may not have all dependenices installed
+such as System.Text.JSON. It is recommended to statically compile all dependices when compiling from source 
+to avoid any issues. The following ILMerge command will statically compile all current depencies. Note
+that this command is intended to be ran in the /bin/Release directory of the Dots solution.
+
+```
+
+```
