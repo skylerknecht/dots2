@@ -2,7 +2,12 @@
 *C# Implant for the Connect Command and Control Framework* 
 
 ## Complimation
-```bash
+Connected is developed towards the .NET 4.8 framework. Target systems may not have all dependenices installed
+such as System.Text.JSON. It is recommended to statically compile all dependices when compiling from source 
+to avoid any issues. The following ILMerge command will statically compile all current depencies. Note
+that this command is intended to be ran in the /bin/Release directory of the Dots solution.
+
+```
 
 ```
 
