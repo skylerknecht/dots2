@@ -101,9 +101,11 @@ namespace Ps
             return false; // not on 64-bit Windows Emulator
         }
 
-        public static void Main() { }
+        public static void Main(string[] args) {
+            ps();
+        }
 
-        public static void ps(string[] args)
+        public static void ps()
         {
             ManagementScope scope = new System.Management.ManagementScope(@"\\.\root\cimv2");
             scope.Connect();

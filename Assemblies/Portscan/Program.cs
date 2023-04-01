@@ -11,7 +11,7 @@ namespace Portscan
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
             if (args.Length != 2)
             {
@@ -23,24 +23,13 @@ namespace Portscan
                 Console.WriteLine(results);
                 Console.WriteLine("\nScanning complete...");
             }
-            return 0;
         }
 
-        public static int portscan(string[] args)
+        public static void portscan(string[] args)
         {
-            try
-            {
-                var results = PortScan(args[0], ParsePort(args[1]));
-                Console.WriteLine(results);
-                Console.WriteLine("\nScanning complete...");
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return -32600;
-            }
-
+            var results = PortScan(args[0], ParsePort(args[1]));
+            Console.WriteLine(results);
+            Console.WriteLine("\nScanning complete...");
         }
 
         static List<int> ParsePort(string portString)
