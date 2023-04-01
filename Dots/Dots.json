@@ -1,0 +1,83 @@
+﻿[
+	[
+		"download",
+		"Download a file",
+		[
+			[ "file", "The file to download" ]
+		],
+		2
+	],
+	[
+		"drives",
+		"Retrieve all of the drives",
+		[],
+		1
+	],
+	[
+		"execute_assembly",
+		"Execute a .NET Assembly",
+		[
+			[ "assembly", "The .NET Assembly to execute" ]
+		],
+		1
+	],
+	[
+		"hostname",
+		"Retrieve the hostname of the machine",
+		[],
+		1
+	],
+	[
+		"ip",
+		"Retrieve the IP of the machine",
+		[],
+		1
+	],
+	[
+		"kill",
+		"Meet the garbage collector",
+		[],
+		0
+	],
+	[
+		"os",
+		"Retrieve the Operating System of the machine",
+		[],
+		1
+	],
+	[
+		"pid",
+		"Retrive the process ID",
+		[],
+		1
+	],
+	[
+		"pwd",
+		"Retrieve the current working directory",
+		[],
+		1
+	],
+	[
+		"shell",
+		"Execute commands",
+		[
+			[ "command", "The command to execute" ]
+		],
+		1
+	],
+	[
+		"upload",
+		"Upload a file",
+		[
+			[ "file", "The file to upload" ],
+			[ "path", "The upload location" ]
+		],
+		2
+	],
+	[
+		"whoami",
+		"Retrieve the current user",
+		[],
+		1
+	]
+]
