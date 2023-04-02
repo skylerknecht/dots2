@@ -1,5 +1,11 @@
 ﻿[
 	[
+		"arch",
+		"Retrieve the current processes architecthure",
+		[],
+		1
+	],
+	[
 		"download",
 		"Download a file",
 		[
@@ -62,6 +68,14 @@
 		"Execute commands",
 		[
 			[ "command", "The command to execute" ]
+		],
+		1
+	],
+	[
+		"spawn",
+		"Spawn a new agent using the provided implant ID",
+		[
+			[ "implant_id", "The Implant to spawn the Agent from" ]
 		],
 		1
 	],
