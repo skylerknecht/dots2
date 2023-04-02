@@ -7,7 +7,7 @@ using System.Net;
 
 namespace StandIn
 {
-	class hStandIn
+	public class hStandIn
 	{
         [DllImport("ntdll.dll")]
         public static extern void RtlZeroMemory(

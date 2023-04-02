@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 
 namespace StandIn
 {
-    class Program
+    public class Program
     {
         public static void returnObject(String sObject, String sDomain = "", String sUser = "", String sPass = "", String sFilter = "")
         {
@@ -4221,7 +4221,7 @@ namespace StandIn
             public UInt32 iLimit { get; set; }
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var ArgOptions = new ArgOptions();
             if (CommandLineParser.Default.ParseArguments(args, ArgOptions))
