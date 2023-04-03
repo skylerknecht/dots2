@@ -7,7 +7,7 @@ using System.Security.Principal;
 
 namespace SharpDump
 {
-    class Program
+    public class Program
     {
         // partially adapted from https://blogs.msdn.microsoft.com/dondu/2010/10/24/writing-minidumps-in-c/
 
@@ -135,7 +135,7 @@ namespace SharpDump
             }
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
             string dumpDir = String.Format("{0}\\Temp\\", systemRoot);
