@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace SharpSecDump
 {
-    class RegQueryValueDemo
+    public class RegQueryValueDemo
     {
         public static List<List<string>> allResults = new List<List<string>>();
 
@@ -23,7 +23,7 @@ namespace SharpSecDump
             if (args.Length <= 0 || args[0].ToLower() == "help" || args[0] == "-h" || args[0].ToLower() == "-help")
             {
                 Help();
-                System.Environment.Exit(0);
+                return;
             }
 
             foreach (string argument in args)
@@ -38,7 +38,7 @@ namespace SharpSecDump
             if (!(arguments.ContainsKey("-target")))
             {
                 Console.WriteLine("[X] Error '-target' flag required. run with '-help' flag to see additional flags");
-                System.Environment.Exit(0);
+                return;
             }
 
             if (arguments.ContainsKey("-threads"))
@@ -51,7 +51,7 @@ namespace SharpSecDump
                 else
                 {
                     Console.WriteLine("[X] Error - not enough available worker threads in the .net thread pool (max available = " + workers + ")");
-                    System.Environment.Exit(0);
+                    return;
                 }
             }
 
@@ -77,7 +77,7 @@ namespace SharpSecDump
                 else
                 {
                     Console.WriteLine("[X] Error if using alternative credentials, please ensure to include domain, username, and password (use a domain of . for a local account)");
-                    System.Environment.Exit(0);
+                    return;
                 }
             }
             else
