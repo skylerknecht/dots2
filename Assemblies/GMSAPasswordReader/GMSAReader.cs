@@ -13,12 +13,13 @@ using CommandLine;
 
 namespace GMSAPasswordReader
 {
-    internal class GMSAReader
+    public class GMSAReader
     {
         private static readonly Regex DCReplaceRegex = new Regex("DC=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            Console.WriteLine("Executed");
             Options options = null;
 
             var parser = new Parser(with =>
