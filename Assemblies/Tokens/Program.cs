@@ -38,12 +38,10 @@ namespace Tokens
             Console.WriteLine("Usage:   Tokens.exe <function> [args]\n");
             Console.WriteLine("Usage:   Tokens.exe steal_token <pid>");
             Console.WriteLine("Usage:   Tokens.exe make_token <domain> <username> <password>");
-            Console.WriteLine("Usage:   Tokens.exe list_tokens");
             Console.WriteLine("Usage:   Tokens.exe whoami");
             Console.WriteLine("Usage:   Tokens.exe rev2self\n");
             Console.WriteLine("Example: Tokens.exe steal_token 4468");
             Console.WriteLine("Example: Tokens.exe make_token rayke.local sknecht WeakPass!");
-            Console.WriteLine("Example: Tokens.exe list_tokens");
             Console.WriteLine("Example: Tokens.exe whoami");
             Console.WriteLine("Example: Tokens.exe rev2self");
         }
@@ -208,16 +206,14 @@ namespace Tokens
         public static extern bool RevertToSelf();
         public static int rev2self()
         {
-
+            var current_identity = WindowsIdentity.GetCurrent().Name;
             if (RevertToSelf())
             {
-                var current_identity = WindowsIdentity.GetCurrent().Name;
                 Console.WriteLine($"Dropped {current_identity} token, you are now {WindowsIdentity.GetCurrent().Name}");
                 return 0;
             }
             else
             {
-                var current_identity = WindowsIdentity.GetCurrent().Name;
                 Console.WriteLine($"Failed to drop impersonated token {current_identity}");
                 return -32600;
             }
