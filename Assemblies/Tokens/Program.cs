@@ -162,14 +162,15 @@ namespace Tokens
                 pid = int.Parse(arguments[1]);
             } catch
             {
-                Console.WriteLine("Failed to parse parameters for steal_token");
+                Console.WriteLine($"Failed to parse parameters for steal_token.");
                 Usage();
                 return 0;
             }
+
             Process process = Process.GetProcessById(pid);
             if (!OpenProcessToken(process.Handle, TokenAccessFlags.TOKEN_ALL_ACCESS, out var hToken))
             {
-                Console.WriteLine("Failed to open process token.");
+                Console.WriteLine($"Failed to open process token:\n{Marshal.GetLastWin32Error()}");
                 return 0;
             }
 
@@ -178,7 +179,7 @@ namespace Tokens
             {
                 CloseHandle(hToken);
                 process.Dispose();
-                Console.WriteLine("Failed to duplicate token.");
+                Console.WriteLine($"Failed to duplicate token:\n{Marshal.GetLastWin32Error()}");
                 return -32600;
             }
 
@@ -186,7 +187,7 @@ namespace Tokens
             {
                 CloseHandle(hToken);
                 process.Dispose();
-                Console.WriteLine($"Failed to impersonated token");
+                Console.WriteLine($"Failed to impersonated token:\n{Marshal.GetLastWin32Error()}");
                 return -32600;
             }
 
